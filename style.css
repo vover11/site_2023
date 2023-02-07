@@ -1,403 +1,662 @@
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Prosto+One&display=swap');
-</style>
-
-
-
-
-
-* {
-  font-family: 'Prosto One', cursive;
-  
-
+@font-face {
+  font-family: Slack;
+  /* Гарнитура шрифта */
+  src: url(fonts/Slack-Light.ttf);
+  /* Путь к файлу со шрифтом */
 }
 
-.old {
+@font-face {
+  font-family: Sissi Display;
+  src: url(fonts/SissiDisplay-Trial.otf);
+}
 
-  background-color: rgb(0, 4, 255);
-  position: relative;
-  margin-top: 15px;
+@font-face {
+  font-family: Catalogue;
+  src: url(fonts/Catalogue-Medium.otf);
+}
 
-  margin-left: 15px;
-  margin-right: 15px;
-  padding: 0;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+@font-face {
+  font-family: CSTM Xprmntl;
+  src: url(fonts/CSTMXprmntl02Bold-Bold-Trial.otf);
+}
 
-
+.card{
+  background-color: rgba(0, 0, 0, 0);
 }
 
 
+.start {
+  width: 100%;
 
-
-
-
-
-
-#container1 #canvas {
-  position: absolute;
-  width: 100vmax; 
-  left: 50%;
-  top: 42%;
-  background: linear-gradient(to bottom, #000, #111);
-  transform: translate3d(-50%, -40%, 0);
-  border-radius: 20px
 }
 
 
+.main {
+  margin-top: 3px;
+  margin-left: 3px;
+  margin-right: 3px;
+  background-color: #080808;
+  line-height: 17px;
 
 
-svg:not(:root) {
-  overflow: visible;
+
 }
 
-svg {
-  height: auto;
-  max-width: 100%;
-  width: 400px;
-  /* color: aqua; */
-}
-
-
-
-
-.col {
-  background-color: rgb(0, 0, 0);
-  --bs-gutter-x: 0rem;
-  padding: 0px;
-  margin-bottom: 15px;
-  height: 500px;
-  border-radius: 20px
-}
-
-.col-xxl-6 {
-  --bs-gutter-x: 0rem;
-  background-color: rgba(255, 255, 255, 0);
-  height: 500px;
-  border-radius: 20px;
-  margin-bottom: 15px;
-  
-  
-}
-
-
-
-
-
-
-
-
-
-
-
-canvas {
-  display: block;
-  border-radius: 20px;
-  margin-right: 15px;
-}
-
-
-
-
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.div {
-  width: 300px;
-  height: 200px;
-  overflow: hidden;
-  position: relative;
-  z-index: 5;
-  transition: .7s;
-  border-radius: 15px;
-  font-family: 'Prosto One', cursive;
-  background-color: rgb(0, 0, 0);
-}
-
-.div:hover {
-  text-shadow: 0px 0px 30px #ffffff99;
-}
-
-.div-text {
-  font-family: 'Prosto One', cursive;
-  width: inherit;
-  height: inherit;
-  border-radius: 15px;
-  background: #ffffff10;
-  border: 1px solid #ffffff20;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 20px;
-  position: absolute;
-  z-index: 5;
-  box-sizing: border-box;
-  text-transform: uppercase;
-}
-
-.div-shadow {
-  display: block;
-  content: '';
-  width: 0px;
-  height: 0px;
-  box-shadow: 0px 0px 100px 100px #ffffff20;
-  background: rgb(252, 252, 252);
-  position: absolute;
-  transition: opacity .7s;
-  opacity: 0;
-  z-index: -5;
-  filter: blur(10px);
-}
-
-.div-shadow.active {
-  opacity: 1;
-}
-
-
-
-
-#sphere {
-  /* background-color: rgb(0, 204, 255); */
-  height: 500px
-}
-
-
-.now {
-  background-color: rgba(255, 255, 0, 0);
+.conteiner-fluid {
   height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  margin: 0px;
-  
-
-}
-
-
-
-
-
-
-
-#right {
-  margin: 0 auto;
-  background: linear-gradient(45deg, #111, #333);
-  background: rgb(180, 18, 18);
-  /*       background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
-  background-size: 400%;
-  animation: gradient 15s ease infinite;
-  display: grid;
-  grid-template-columns: 300px 300px;
-  grid-template-rows: 200px 200px;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-  justify-content: center;
-  align-content: center;
-  border-radius: 20px;
-
-}
-
-
-
-.block {
-  height: 500px;
-  background-color: rgb(0, 0, 0);
-  margin-right: 15px;
-  align-content: center;
-  flex-wrap: wrap;
-  justify-content: center;
-  display: flex;
-  border-radius: 25px;
-}
-
-
-
-
-
-
-
-
-/* #left {
-  /* background-image: linear-gradient(200deg, hsla(187, 100%, 69%, 1), hsla(187, 100%, 69%, 0) 70%), linear-gradient(130deg, hsla(300, 100%, 69%, 1), hsla(300, 100%, 69%, 0) 70%), linear-gradient(330deg, hsla(0, 100%, 69%, 1), hsla(0, 100%, 69%, 0) 70%); */
-
-  
-  background-color: rgb(0, 0, 0);
-  align-content: center;
-  flex-wrap: wrap;
-  justify-content: center;
-  display: flex;
-  
-  
-} */
-
-#right2 {
-  background-color: rgb(248, 244, 9);
-  
-
-
-}
-
-
-#footer {
-  height: 150px;
-  background: #000000;
-  clear: both;
-}
-
-canvas {
-  display: block;
-}
-
-.wrapper {
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  padding: 0px;
-  border-radius: 20px;
-
-}
-
-.wrapper .wrapper__container {
-  width: 100%;
-  height: 100%
-  
-
-  
-}
-
-.wrapper #defaultCanvas0   {
-  width: 100% !important;
-  height: 100% !important;
-  margin: 0px;
-  padding: 0;
-  border-radius: 20px
-
-}
-
-.container3d  {
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: 20px;
-  margin-right: 15px;
-  
-  
-  
-
-
-
 
 
 }
 
 .row {
+  height: 100%;
   --bs-gutter-x: 0rem;
 
+}
+
+.col {}
+
+.col-logo {
+  min-width: 157px;
+
+
+}
+
+.threejs {
+
+  margin-top: 3px;
+
+}
+
+.picture {
+  width: 100%;
+
+
+
+}
+
+.banner {
+  background: url(.png), radial-gradient(69.64% 66.53% at 50% 50.08%, #1137C6 45.83%, #BC2649 100%);
+  height: 128px;
+  margin-top: 3px;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+
+}
+
+
+
+
+
+.logo {
+  min-width: 187px;
+  width: 157px;
+  height: 56px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: white;
+  border-radius: 1000px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+
+
+
+
+}
+
+.logotext {
+  font-family: Slack, 'Slack Ligt';
+  margin: 0px;
+  color: white;
+  font-weight: 300;
+  font-size: 29px;
+  top: 50%;
+
+
+
+
+}
+
+
+
+
+.cardtext {
+  width: auto;
+  height: 128px;
+  margin-left: 20px;
+  padding-top: 20px;
+
+
+}
+
+.text1 {
+  color: rgb(255, 255, 255);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 0px;
+  text-align: justify;
+  text-transform: uppercase;
+
+
+}
+
+.block1 {
+  position: absolute;
+  color: rgb(0, 136, 255);
+  width: 387px;
+  height: 128px;
+
+
+
+}
+
+.menu {
+  background: url(.png), linear-gradient(180deg, #BC2649 27.08%, #BC2649 44.79%, #000000 100%), #B22851;
+  border-radius: 50px 0px 50px 0px;
+  width: auto;
+  height: 132px;
+  margin-right: 3px;
+  margin-top: 3px;
+  position: relative;
+
+}
+
+#element1 {
+  position: relative;
+  transition: all 1s ease-in-out;
+}
+
+#element1.clicked {
+  transform: translateY(20px);
+}
+
+
+
+
+.menutext {
+  color: #000000;
+  font-family: 'CSTM Xprmntl';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 31px;
+  text-transform: lowercase;
+  padding-top: 10px;
+
+
+
+}
+
+.cardtext {}
+
+.menu2 {
+  background: url(.png), linear-gradient(180deg, #3300FF 0%, #000000 100%), #3300FF;
+  border-radius: 0px 50px 20px;
+  width: auto;
+  height: 132px;
+  margin-top: 3px;
+
+
+}
+
+#element2 {
+  position: relative;
+  transition: all 1s ease-in-out;
+}
+
+#element2.clicked {
+  transform: translateY(20px);
+}
+
+
+.menutext2 {
+  color: #ffffff;
+  font-family: 'Sissi display';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 31px;
+  text-transform: lowercase;
+  padding-top: 10px;
+
+
+
+}
+
+
+.menu3 {
+  border-style: solid;
+  border-width: 2px;
+  border-color: white;
+  border-radius: 1000px;
+  border-radius: 0px 50px 0px 50px;
+  width: auto;
+  height: 88px;
+  margin-right: 3px;
+  margin-top: 3px;
+
+}
+
+.menu4 {
+  border-style: solid;
+  border-width: 2px;
+  border-color: white;
+  border-radius: 50px 0px 50px;
+  width: auto;
+  height: 88px;
+  margin-top: 3px;
+
+
+}
+
+.space {
+  height: 108px;
+}
+
+.now {
+  background-color: rgba(218, 28, 28, 0.363);
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0px;
+
+
+
+}
+
+
+
+.wrapper {
+  width: 100%;
+  height: 300px;
+  margin: 0 auto;
+  padding: 0px;
+  border-radius: 50px 0px 50px;
+  margin-top: 3px;
+
+}
+
+.wrapper .wrapper__container {
+  width: 100%;
+  height: 100%;
+  border-radius: 200px;
+  
+}
+
+.wrapper #defaultCanvas0 {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0px;
+  padding: 0;
+  border-radius: 50px 50px 0px 50px;
+
+}
+
+.canvasfirst{
+  border-radius: 30px;
+  background-color: #070707;
+  
+}
+
+.flip-card {
+  background-color: rgba(218, 28, 28, 0);
+  width: 100%;
+  height: 245px;
+  perspective: 1000px;
+  display: inline-block;
+  display: flex;
+  justify-content: center;
+  border-radius: 30px;
+  margin-top: 3px;
+
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+
+
+}
+
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+
+
+
+}
+
+.flip-card-front {
+  margin: auto;
+  background-color: #3300FF;
+  color: black;
+  border-radius: 30px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+
+
+
+
+
+}
+
+.flip-card-back {
+  background-color: #3300FF;
+  color: white;
+  transform: rotateY(180deg);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+.circle {
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border-radius: 100% 50%;
+  /* background: url(.png), radial-gradient(69.64% 66.53% at 50% 50.08%, #000000 0%, #80C442 0.01%, #1137C6 45.83%, #BC2649 100%); */
+  position: absolute;
+  width: 320px;
+  height: 160px;
+  font-family: 'Catalogue';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 27px;
+  line-height: 32px;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  color: white;
+  transform: rotate(-18.26deg);
+  border: 2px solid #FFFFFF;
+  position: relative;
+
+}
+
+.picture_star{
+
+  position: absolute; 
+  left: 130px;
+  top: 210px;
+  
+  
+}
+
+.picture_star1{
+  position: absolute; 
+  left: 250px;
+  top: 40px;
   
 
 }
 
 
-
-
-
-\
-.message {
-  color: rgb(0, 0, 0);
-  background-color: chartreuse;
-  width: 800px;
-  border: 1px solid rgb(255, 255, 255);
-  font-size: 20px;
-  margin-right: 50px;
-  margin-bottom: 50px;
-  padding: 15px;
-  font-family: verdana
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transition: transform 1s;
+  
 }
 
-.warning {
-  background-color: rgb(255, 255, 255);
-  width: 800px;
-
+.card-back {
+  transform: rotateY(180deg);
 }
 
-.fail {
-  background-color: blue;
-  width: 800px;
+.flipped .card-front {
+  transform: rotateY(180deg);
 }
 
-.info {
-  background-color: yellow;
+.flipped .card-back {
+  transform: rotateY(0deg);
 }
 
-/*div:hover{
-  border: 10px solid rgb(66, 51, 153);
+.card-front{
+  width: 100%;
+  height: 300px;
+  background-color: #3300FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
 }
-*/
-.my_style {
-  box-shadow: 4px 4px 14px rgb(66, 51, 153);
-  font-family: "Lucida Console", "Courier New", monospace;
-  border-radius: 3px;
-  line-height: 25px;
+
+.card-back{
+  width: 100%;
+  height: 300px;
+  background-color: #3300FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 13px;
+  text-transform: lowercase;
   text-align: center;
-  background: green;
-  color: #fff;
-  width: 200px;
-  padding: 10px;
-  float: left
+  
+
 }
 
-.my_style1 {
-  font-family: "Lucida Console", "Courier New", monospace;
-  border-radius: 3px;
-  padding: 10px 0;
-  line-height: 25px;
+.container3d{
+  background-color: #fd020200;
+  width: 100% !important;
+  height: 300px !important;
+  border-radius: 30px;
+
+}
+
+.logocardweb{
+ margin-top: 52px;
+ background: #727272;
+ width: 100%;
+ height: 270px;
+ border-radius: 30px 30px 0px 0px;
+
+}
+
+.cardbutton{
+  background-color: #3300FF;
+  margin-top: 3px;
+  width: 100%;
+  height: 59px;
+  border-radius: 0px 0px 30px 30px;
+  border: 0px;
+  color: white;
+ 
+
+
+}
+
+
+
+
+
+/* Это CSS свойство использует селектор :active для изменения прозрачности (opacity) кнопки при нажатии. Когда кнопка активна, ее прозрачность уменьшается до 0.5. */
+button {
+  opacity: 1;
+}
+
+button:active {
+  opacity: 0.5;
+}
+/*  */
+
+
+#websiteteamcon{
+  display: flex;
+  margin-top: 74px;
+
+}
+
+.websiteteam {
+  margin-right: 3px;
+  margin-top: 3px;
+  min-width: 98px;
+  width: 98px;
+  height: 36px;
+  border-style: solid;
+  border: 1px solid #FFFFFF;
+  border-radius: 50px 0px 50px 50px;
+  display: flex;
+  justify-content: center;
   text-align: center;
-  background: green;
-  display: block;
-  color: #fff;
-  width: 200px;
-  border: 3px solid rgb(0, 0, 0);
-  padding: 10px;
-  float: right
+  align-items: center;
+  font-family: 'Slack';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19px;
+  text-transform: lowercase;
+
+
 }
 
-.my_style2 {
-  font-family: "Lucida Console", "Courier New", monospace;
-  border-radius: 3px;
 
-  line-height: 25px;
+
+
+.flip-card {
+  background-color: rgba(218, 28, 28, 0);
+  width: 100%;
+  height: 245px;
+  perspective: 1000px;
+  display: inline-block;
+  display: flex;
+  justify-content: center;
+  border-radius: 30px;
+  margin-top: 3px;
+
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
   text-align: center;
-  background: green;
-  display: block;
-  color: #fff;
-  width: 200px;
-  border: 3px solid rgb(0, 0, 0);
-  padding: 10px;
-  margin: auto
-}
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
 
-a:hover {
-  border: 7px solid green;
-}
-
-.box-model>div {
-  margin-top: 55px;
-  float: left;
-  background: black;
-  height: 200px;
-  width: 25%;
-  border: 5px solid brown;
-  box-sizing: border-box;
 
 }
+
+.flip-card1 {
+  background-color: rgba(218, 28, 28, 0);
+  width: 100%;
+  height: 245px;
+  perspective: 1000px;
+  display: inline-block;
+  display: flex;
+  justify-content: center;
+  border-radius: 30px;
+  margin-top: 3px;
+
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+
+
+
+}
+
+
+
+
+
+.slider {
+  overflow-x: scroll;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  height: 100%;
+}
+
+.card1 {
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  background-color: rgba(204, 204, 204, 0);
+  text-align: center;
+  margin-right: 10px;
+}
+
+.card2 {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  background-color: #cccccc00;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.card3 {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  background-color: #cccccc00;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.card {
+  background-color: rgba(0, 0, 0, 0);
+  margin-top: 3px;
+  width: 100%;
+  height: 300px;
+  position: relative;
+  perspective: 1000px;
+  border-radius: 30px;
+}
+
+
+
+
+
+/* Это CSS свойство использует селектор :active для изменения прозрачности (opacity) кнопки при нажатии. Когда кнопка активна, ее прозрачность уменьшается до 0.5. */
+button {
+  opacity: 1;
+}
+
+button:active {
+  opacity: 0.5;
+}
+/*  */
+
+
+#websiteteamcon{
+  display: flex;
+  margin-top: 74px;
+
+}
+
+
