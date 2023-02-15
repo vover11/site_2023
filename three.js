@@ -1,223 +1,244 @@
-let container3d = document.querySelector('.container3d')
+import * as THREE from "https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js";
+import { OrbitControls } from "https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/controls/OrbitControls.js";
+import { GUI } from "https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js";
+
+
+var container3d = document.querySelector('.container3d');
+
 var w = container3d.offsetWidth;
 var h = container3d.offsetHeight;
-// var w = container3d.offsetWidth;
-// var h = container3d.offsetHeight;
-// var container3d = document.getElementById( 'canvas' )
 
+var scene = new THREE.Scene();
 
+var camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
+camera.position.z = 200;
 
+var renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.domElement.id = "canvasfirst";
+renderer.domElement.classList.add("canvasfirst");
+const canvas = renderer.domElement;
+container3d.appendChild(renderer.domElement);
+renderer.setSize(w, h);
+renderer.setClearColor(0xefefef, 1);
 
-
-let linksObject = {
-    1: "https://vasiliyanikin.com/",
-    2: "https://vasiliyanikin.com/",
-    3: "https://vasiliyanikin.com/",
-    4: "https://vasiliyanikin.com/",
-    5: "https://vasiliyanikin.com/",
-    6: "https://vasiliyanikin.com/",
-    7: "https://vasiliyanikin.com/",
-    8: "https://vasiliyanikin.com/",
-}
-
-import * as THREE from 'https://cdn.skypack.dev/three@v0.119.0';
-import { OrbitControls } from 'https://cdn.skypack.dev/three@v0.119.0/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from 'https://cdn.skypack.dev/three@v0.119.0/examples/jsm/loaders/GLTFLoader.js';
-
-let scene,
-    camera,
-    renderer,
-    controls,
-    textureLoader,
-    GLLoader
-
-init();
-
-function init() {
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    container3d.appendChild(renderer.domElement);
-    renderer.setSize(w, h);
-    renderer.setClearColor(0x000);
-
+function main() {
     
 
-    scene = new THREE.Scene();
-
-    camera = new THREE.PerspectiveCamera(50, w / h, .5, 200);
-    camera.lookAt(scene.position);
-    camera.position.z = -9;
-
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.maxDistance = 9;
-    controls.minDistance = 1;
-    controls.rotateSpeed = -.3;
-    controls.enablePan = false;
-    controls.autoRotate = false;
-    controls.autoRotateSpeed = .5;
-
-    textureLoader = new THREE.TextureLoader();
-    GLLoader = new GLTFLoader();
-
-    // light
-
-    let ambient = new THREE.AmbientLight(0xffffff, 2)
-    scene.add(ambient)
-
-    // mesh
-
-    let modelsPaths = [
-        'https://raw.githubusercontent.com/vover11/newcube/main/cube.gltf',
-        'models/cube.glb',
-        'models/cube.gltf',
-    ]
-
-    let root = new THREE.Object3D()
-
-    let links = []
-
-    GLLoader.load(modelsPaths[0], (gltf) => {
-        root = gltf.scene
-        scene.add(root)
-        root.position.set(0, 0, 0)
-
-        root.traverse(function (node) {
-
-            if (node instanceof THREE.Mesh && node.name !== 'root' && node.name !== 'Cube') {
-                links.push(node)
-            }
-
-        });
-    })
-
-    // interactive
-
-    const raycaster = new THREE.Raycaster();
-    let mouse = new THREE.Vector2();
-
-    let move = 0
-    let linkHover = 0
-    let linkClick = 0
-
-    function onChangeControl() {
-        move = 1
+  
+    const fov = 45;
+    const aspect = 2; // the canvas default
+    const near = 0.1;
+    const far = 100;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.set(0, 10, 20);
+  
+    class MinMaxGUIHelper {
+      constructor(obj, minProp, maxProp, minDif) {
+        this.obj = obj;
+        this.minProp = minProp;
+        this.maxProp = maxProp;
+        this.minDif = minDif;
+      }
+      get min() {
+        return this.obj[this.minProp];
+      }
+      set min(v) {
+        this.obj[this.minProp] = v;
+        this.obj[this.maxProp] = Math.max(
+          this.obj[this.maxProp],
+          v + this.minDif
+        );
+      }
+      get max() {
+        return this.obj[this.maxProp];
+      }
+      set max(v) {
+        this.obj[this.maxProp] = v;
+        this.min = this.min; // this will call the min setter
+      }
     }
-
-    raycastSprite()
-
-    function raycastSprite() {
-
-        let headerHeight = 0;
-        var container3d = document.getElementsByClassName('container3d')[0];
-        window.onmousemove = (function (e) {
-
-            if (window.innerWidth > 920) {
-
-                e.preventDefault();
-                mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
-                mouse.y = -((e.clientY - headerHeight + pageYOffset) / renderer.domElement.clientHeight) * 2 + 1;
-                raycaster.setFromCamera(mouse, camera);
-                let intersects = raycaster.intersectObjects(links, true);
-
-                if (intersects.length > 0) {
-
-                    document.body.style.cursor = 'url("https://child-toy.ru/image/circle_2.png"), auto';
-                    //container3d.style.cursor = 'url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/9632/heart.png"), auto';
-                    linkHover = 1
-
-                } else {
-                    document.body.style.cursor = 'url("https://child-toy.ru/image/circle_3.png"), auto';
-                    //container3d.style.cursor = '';
-                    controls.removeEventListener('change', onChangeControl)
-                    move = 0
-                    linkHover = 0
-                    linkClick = 0
-                }
-            }
-        });
-
-        if (window.innerWidth > 920) {
-            window.addEventListener('mousedown', pointerDown, false)
-            window.addEventListener('mouseup', openLink, false)
-        }
-        else {
-            container3d.querySelector('canvas').addEventListener('pointerup', openLinkMobile, false)
-            container3d.querySelector('canvas').addEventListener('pointerdown', pointerDown, false)
-        }
-        var pd = false;
-        function pointerDown() {
-
-            pd = true;
-            setTimeout(function () {
-
-                pd = false;
-            }, 500);
-
-        }
-        function openLinkMobile(e) {
-            e.preventDefault();
-            mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
-            mouse.y = -(e.clientY / renderer.domElement.clientHeight) * 2 + 1;
-            raycaster.setFromCamera(mouse, camera);
-
-            let intersects = raycaster.intersectObjects(links, true);
-            if (intersects.length > 0 && pd) {
-                intersects = intersects.sort(function (a, b) {
-                    return a.distanceToRay - b.distanceToRay;
-                });
-                let link = intersects[0].object;
-                location.href = linksObject[Number(link.name)]
-            } else {
-            }
-        }
-
-
-        function openLink(e) {
-
-            e.preventDefault();
-            mouse.x = (e.clientX / renderer.domElement.clientWidth) * 2 - 1;
-            mouse.y = -((e.clientY - headerHeight + pageYOffset) / renderer.domElement.clientHeight) * 2 + 1;
-            raycaster.setFromCamera(mouse, camera);
-            let intersects = raycaster.intersectObjects(links, true);
-            if (intersects.length > 0) {
-
-                intersects = intersects.sort(function (a, b) {
-                    return a.distanceToRay - b.distanceToRay;
-                });
-                let link = intersects[0].object;
-
-                linkClick = 1
-                controls.addEventListener('change', onChangeControl)
-
-                window.addEventListener('click', () => pd && linkHover && linkClick ? location.href = linksObject[Number(link.name)] : '')
-
-            } else {
-
-            }
-
-        }
+  
+    function updateCamera() {
+      camera.updateProjectionMatrix();
     }
-
-    window.addEventListener('resize', onWindowResize)
-
-    animate()
-}
-
-
-function animate() {
-
-    camera.updateProjectionMatrix();
-
-    renderer.render(scene, camera);
-
+  
+    const gui = new GUI();
+    gui.add(camera, "fov", 1, 180).onChange(updateCamera);
+    const minMaxGUIHelper = new MinMaxGUIHelper(camera, "near", "far", 0.1);
+    gui
+      .add(minMaxGUIHelper, "min", 0.1, 50, 0.1)
+      .name("near")
+      .onChange(updateCamera);
+    gui
+      .add(minMaxGUIHelper, "max", 0.1, 50, 0.1)
+      .name("far")
+      .onChange(updateCamera);
+  
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.set(0, 5, 0);
     controls.update();
-    requestAnimationFrame(animate);
-}
+  
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color("black");
+  
+    {
+      const planeSize = 40;
+  
+      const loader = new THREE.TextureLoader();
+      const texture = loader.load(
+        "https://threejsfundamentals.org/threejs/resources/images/checker.png"
+      );
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      texture.magFilter = THREE.NearestFilter;
+      const repeats = planeSize / 2;
+      texture.repeat.set(repeats, repeats);
+  
+      const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
+      const planeMat = new THREE.MeshPhongMaterial({
+        map: texture,
+        side: THREE.DoubleSide
+      });
+      const mesh = new THREE.Mesh(planeGeo, planeMat);
+      mesh.rotation.x = Math.PI * -0.5;
+      scene.add(mesh);
+    }
+    {
+      const cubeSize = 4;
+      const cubeGeo = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+      const cubeMat = new THREE.MeshPhongMaterial({ color: "#8AC" });
+      const mesh = new THREE.Mesh(cubeGeo, cubeMat);
+      mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
+      scene.add(mesh);
+    }
+    {
+      const sphereRadius = 3;
+      const sphereWidthDivisions = 32;
+      const sphereHeightDivisions = 16;
+      const sphereGeo = new THREE.SphereGeometry(
+        sphereRadius,
+        sphereWidthDivisions,
+        sphereHeightDivisions
+      );
+      const sphereMat = new THREE.MeshPhongMaterial({ color: "#CA8" });
+      const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+      mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
+      scene.add(mesh);
+    }
+  
+    {
+      const color = 0xffffff;
+      const intensity = 1;
+      const light = new THREE.DirectionalLight(color, intensity);
+      light.position.set(0, 10, 0);
+      light.target.position.set(-5, 0, 0);
+      scene.add(light);
+      scene.add(light.target);
+    }
+  
+    function resizeRendererToDisplaySize(renderer) {
+      const canvas = renderer.domElement;
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      const needResize = canvas.width !== width || canvas.height !== height;
+      if (needResize) {
+        renderer.setSize(width, height, false);
+      }
+      return needResize;
+    }
+  
+    function render() {
+      if (resizeRendererToDisplaySize(renderer)) {
+        const canvas = renderer.domElement;
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+      }
+  
+      renderer.render(scene, camera);
+  
+      requestAnimationFrame(render);
+    }
+  
+    requestAnimationFrame(render);
+  }
+  
+  main();
 
-function onWindowResize() {
 
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var container3d = document.querySelector('.container3d');
+
+// var w = container3d.offsetWidth;
+// var h = container3d.offsetHeight;
+
+// var scene = new THREE.Scene();
+
+// var camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
+// camera.position.z = 200;
+
+// var renderer = new THREE.WebGLRenderer({ antialias: true });
+// renderer.domElement.id = "canvasfirst";
+// renderer.domElement.classList.add("canvasfirst");
+// container3d.appendChild(renderer.domElement);
+// renderer.setSize(w, h);
+// renderer.setClearColor(0xefefef, 1);
+
+// var geometry = new THREE.TorusKnotGeometry(50, 6, 500, 16, 3, 2, 2);
+// var material = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: true }); // set the color of the material to blue (0x0000ff)
+// var cube = new THREE.Mesh(geometry, material);
+// scene.add(cube);
+
+// var light = new THREE.PointLight(0xFFFF00);
+// light.position.set(10, 10, 25);
+// scene.add(light);
+
+// var render = function () {
+//     requestAnimationFrame(render);
+
+//     cube.rotation.x += 0.01;
+//     cube.rotation.y += 0.005;
+//     cube.rotation.z += 0.05;
+
+//     renderer.render(scene, camera);
+// };
+// render();
+
+// window.addEventListener('resize', onWindowResize, false);
+
+// function onWindowResize() {
+//     w = container3d.offsetWidth;
+//     h = container3d.offsetHeight;
+//     camera.aspect = w / h;
+//     camera.updateProjectionMatrix();
+//     renderer.setSize(w, h);
+//     renderer.setClearColor(0xefefef, 1);
+// }
